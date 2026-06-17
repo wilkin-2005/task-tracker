@@ -1,7 +1,7 @@
 // Kompilera en gång: "npx tsc"
 // Automatisk kompilering: "npm run watch"
 
-const tasks = [
+const tasks: string[] = [
     "Lära mig Typescript",
     "Vattna blommorna",
     "Fira midsommar",
