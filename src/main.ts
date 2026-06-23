@@ -87,17 +87,22 @@ function showHeader() {
 
 // Skapa en funktion som skriver ut alla våra tasks i en lista i konsolen.
 function showAllTasks() {
-    if (tasks.length > 0){
-        console.log("\t[Uppgifter]");
+    if (tasks.length > 0)
+    {
+        let output: string = "";
 
         for (let i = 0; i < tasks.length; i++) {
-            console.log(`${i+1}) ${tasks[i]?.name}`);
+            output += `${i+1}) ${tasks[i]?.name}\n`;
         }
         /* forEach som skriver ut i punktlista istället för numrerad lista
         tasks.forEach(element => {
             console.log(`• ${element.name}`);
         });
         */
+        console.log(`\t===========
+     UPPGIFTER
+    ===========`);
+        console.log(output);
     }
     else {
         console.log("!! Inga aktiva uppgifter !!");
@@ -105,25 +110,38 @@ function showAllTasks() {
 }
 
 // Visa en lista med avklarade tasks
-function showCompletedTasks () {
-    console.log("\t[Avklarade uppgifter]");
+function showCompletedTasks()
+{
+    let output: string = "";
     
     tasks.forEach(task => {
         if (task.completed) {
-            console.log(`• ${task.name}`);
+            output += `• ${task.name}\n`;
         }
     });
+
+    console.log(`\t=====================
+     AVKLARADE UPPGIFTER
+    =====================`);
+    console.log(output);
 }
 
 // Visa en lista med ej avklarade tasks
-function showPendingTasks() {
-    console.log("\t[Ej avklarade uppgifter]");
+function showPendingTasks()
+{
+    let output: string = "";
     
     tasks.forEach(task => {
         if (! task.completed) {
-            console.log(`• ${task.name}`);
+            output += `• ${task.name}\n`;
         }
     });
+
+    console.log(`\t========================
+     EJ AVKLARADE UPPGIFTER
+    ========================`);
+    
+    console.log(output);
 }
 
 // Visa statistik på antal tasks, hur många avklarade, hur många ej avklarade tasks
@@ -141,12 +159,13 @@ function showStatistics() {
     });
 
     const comletionRate: number = completedTasks / tasks.length * 100;
-
-    console.log("\t[Statistik]");
-    console.log(`Totalt antal uppgifter: ${tasks.length}`);
-    console.log(`Antal avklarade uppgifter: ${completedTasks}`);
-    console.log(`Antal ej avklarade uppgifter: ${pendingTasks}`);
-    console.log(`Andel avklarade uppgifter: ${comletionRate.toFixed(1)}%`);
+    console.log(`\t===========
+     STATISTIK
+    ===========`);
+    console.log(`Totalt antal uppgifter: ${tasks.length}
+Antal avklarade uppgifter: ${completedTasks}
+Antal ej avklarade uppgifter: ${pendingTasks}
+Andel avklarade uppgifter: ${comletionRate.toFixed(1)}%`);
 }
 
 // Skriver ut alla delar av sidan. Tömmer konsolen innan om så önskas.
@@ -156,12 +175,14 @@ function writeAll(doClear: boolean = false) {
 
     showHeader();
     showAllTasks();
-    showStatistics();
     showCompletedTasks();
     showPendingTasks();
+    showStatistics();
 }
 
-showHeader();
-addTask("Tömma och fylla diskmaskinen", true,);
-showAllTasks();
-showStatistics();
+// showHeader();
+// addTask("Tömma och fylla diskmaskinen", true,);
+// showAllTasks();
+// showStatistics();
+
+writeAll();
