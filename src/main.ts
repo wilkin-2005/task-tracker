@@ -2,75 +2,95 @@
 // Automatisk kompilering: "npm run watch"
 
 
+
+// "pending" | "completed"
+type Status = "Pågående" | "Slutförd";
+
+// "low" | "medium" | "high"
+type PriorityLevels = "Låg" | "Medel" | "Hög";
+
 type Task = {
     name: string;
-    completed: boolean;
-    priority: number;
+    status: Status;
+    priority: PriorityLevels;
     description?: string;
+    notes?: string;
 };
 
 // En array med flertalet objekt av typen Task
 const tasks: Task[] = [
     {
         name: "Lära mig Typescript",
-        completed: false,
-        priority: 4,
+        status: "Pågående",
+        priority: "Hög",
         description: "Var med på föreläsningar och gör uppgifterna läraren ger dig."
     },
     {
         name: "Vattna blommorna",
-        completed: true,
-        priority: 3
+        status: "Pågående",
+        priority: "Hög"
     },
     {
         name: "Fira midsommar",
-        completed: true,
-        priority: 4,
+        status: "Slutförd",
+        priority: "Medel",
         description: "Äta tårta, grilla och spela sällskapsspel med vänner."
     },
     {
         name: "Träna",
-        completed: false,
-        priority: 3
+        status: "Slutförd",
+        priority: "Medel"
     },
     {
         name: "Handla",
-        completed: true,
-        priority: 2
+        status: "Slutförd",
+        priority: "Låg"
     },
     {
         name: "Tvätta",
-        completed: true,
-        priority: 2
+        status: "Slutförd",
+        priority: "Låg"
     },
     {
         name: "Plugga",
-        completed: true,
-        priority: 4
+        status: "Pågående",
+        priority: "Hög"
     }
 ];
 
 
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
-function addTask(taskName: string, isCompleted: boolean = false, taskPriority: number = 1) {
+function addTask(taskName: string, taskPriority: PriorityLevels) {
     tasks.push({
         name: taskName,
-        completed: isCompleted,
+        status: "Pågående",
         priority: taskPriority,
     });
     console.log(`Lade till ny uppgift: "${taskName}"`);
 }
 
 // Sätt en task som klar
-function completeTask(taskName: string) {
+function completeTask(taskName: string, updateTo: Status = "Slutförd", toggle?: boolean) {
     tasks.forEach(task => {
-        if (task.name == taskName && !task.completed) {
+        if (task.name === taskName && toggle) {
+            // kod för att toggla status här
+            task.status = (task.status === "Pågående") ? "Slutförd" : "Pågående";
+            console.log(`Växlade statusen för uppgiften ${task.name}`)
+        }
+        else if (task.name === taskName) {
+            task.status = updateTo;
+            console.log(`Ändrade statusen till ${updateTo} för uppgiften ${task.name}`);
+        }
+        
+        /*/
+        if (task.name == taskName && task.status) {
             task.completed = true;
             console.log(`Markerade uppgift som avklarad: ${task.name}`);
         }
         else if (task.name == taskName && task.completed) {
             console.log(`Uppgift redan avklarad: ${task.name}`);
         }
+        //*/
     });
 }
 
@@ -89,62 +109,82 @@ function showHeader() {
 function showAllTasks() {
     if (tasks.length > 0)
     {
-        let output: string = "";
-
-        for (let i = 0; i < tasks.length; i++) {
-            output += `${i+1}) ${tasks[i]?.name}\n`;
-        }
-        /* forEach som skriver ut i punktlista istället för numrerad lista
-        tasks.forEach(element => {
-            console.log(`• ${element.name}`);
-        });
-        */
         console.log(`\t===========
      UPPGIFTER
     ===========`);
-        console.log(output);
+
+        for (let i = 0; i < tasks.length; i++) {
+            let output: string = "";
+
+            output += `${i+1}) ${tasks[i]?.name}\n`;
+            output += `   Status: ${tasks[i]?.status}\n`;
+            output += `   Prioritet: ${tasks[i]?.priority}`;
+
+            console.log(output);
+        }
     }
     else {
         console.log("!! Inga aktiva uppgifter !!");
     }
 }
 
-// Visa en lista med avklarade tasks
-function showCompletedTasks()
+// Visar upp alla tasks som är antingen "Pågående" eller "Slutförd"
+function showTaskByStatus(status: Status)
 {
     let output: string = "";
-    
+
     tasks.forEach(task => {
-        if (task.completed) {
+        if (task.status === status) {
             output += `• ${task.name}\n`;
         }
     });
 
-    console.log(`\t=====================
-     AVKLARADE UPPGIFTER
+    if (status === "Pågående") {
+        console.log(`\t====================
+     PÅGÅENDE UPPGIFTER
+    ====================`);
+    }
+    else {
+        console.log(`\t=====================
+     SLUTFÖRDA UPPGIFTER
     =====================`);
+    }
+
     console.log(output);
 }
 
-// Visa en lista med ej avklarade tasks
-function showPendingTasks()
+// Visa tasks med viss prioritet
+function showTaskByPriority(priorityLvl: PriorityLevels)
 {
     let output: string = "";
-    
+
     tasks.forEach(task => {
-        if (! task.completed) {
+        if (task.priority === priorityLvl) {
             output += `• ${task.name}\n`;
         }
     });
 
-    console.log(`\t========================
-     EJ AVKLARADE UPPGIFTER
-    ========================`);
-    
+    if (priorityLvl === "Hög") {
+        console.log(`\t===============
+     HÖG PRIORITET
+    ===============`);
+    }
+    else if (priorityLvl === "Medel") {
+        console.log(`\t====================
+     MEDELHÖG PRIORITET
+    ====================`);
+    }
+    else {
+        console.log(`\t===============
+     LÅG PRIORITET
+    ===============`);
+    }
+
     console.log(output);
 }
 
 // Visa statistik på antal tasks, hur många avklarade, hur många ej avklarade tasks
+/*/
 function showStatistics() {
     let completedTasks: number = 0;
     let pendingTasks: number = 0;
@@ -167,22 +207,12 @@ Antal avklarade uppgifter: ${completedTasks}
 Antal ej avklarade uppgifter: ${pendingTasks}
 Andel avklarade uppgifter: ${comletionRate.toFixed(1)}%`);
 }
+//*/
 
-// Skriver ut alla delar av sidan. Tömmer konsolen innan om så önskas.
-function writeAll(doClear: boolean = false) {
-    if (doClear)
-        console.clear();
+showHeader();
 
-    showHeader();
-    showAllTasks();
-    showCompletedTasks();
-    showPendingTasks();
-    showStatistics();
-}
+showTaskByStatus("Pågående");
+showTaskByStatus("Slutförd");
 
-// showHeader();
-// addTask("Tömma och fylla diskmaskinen", true,);
-// showAllTasks();
-// showStatistics();
-
-writeAll();
+completeTask("Plugga");
+completeTask("Tvätta");
