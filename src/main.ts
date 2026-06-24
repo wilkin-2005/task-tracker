@@ -2,12 +2,11 @@
 // Automatisk kompilering: "npm run watch"
 
 
-
 // "pending" | "completed"
-type Status = "Pågående" | "Slutförd";
+type Status = "pågående" | "slutförd";
 
 // "low" | "medium" | "high"
-type PriorityLevels = "Låg" | "Medel" | "Hög";
+type PriorityLevels = "låg" | "medel" | "hög";
 
 type Task = {
     name: string;
@@ -21,83 +20,75 @@ type Task = {
 const tasks: Task[] = [
     {
         name: "Lära mig Typescript",
-        status: "Pågående",
-        priority: "Hög",
-        description: "Var med på föreläsningar och gör uppgifterna läraren ger dig."
+        status: "pågående",
+        priority: "hög",
+        description: "Var med på föreläsningar och gör uppgifterna läraren ger dig.",
     },
     {
         name: "Vattna blommorna",
-        status: "Pågående",
-        priority: "Hög"
+        status: "pågående",
+        priority: "hög"
     },
     {
         name: "Fira midsommar",
-        status: "Slutförd",
-        priority: "Medel",
+        status: "slutförd",
+        priority: "medel",
         description: "Äta tårta, grilla och spela sällskapsspel med vänner."
     },
     {
         name: "Träna",
-        status: "Slutförd",
-        priority: "Medel"
+        status: "slutförd",
+        priority: "medel"
     },
     {
         name: "Handla",
-        status: "Slutförd",
-        priority: "Låg"
+        status: "slutförd",
+        priority: "låg"
     },
     {
         name: "Tvätta",
-        status: "Slutförd",
-        priority: "Låg"
+        status: "slutförd",
+        priority: "låg"
     },
     {
         name: "Plugga",
-        status: "Pågående",
-        priority: "Hög"
+        status: "pågående",
+        priority: "hög"
     }
 ];
 
 
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
-function addTask(taskName: string, taskPriority: PriorityLevels) {
+function addTask(taskName: string, taskPriority: PriorityLevels): void
+{
     tasks.push({
         name: taskName,
-        status: "Pågående",
+        status: "pågående",
         priority: taskPriority,
     });
     console.log(`Lade till ny uppgift: "${taskName}"`);
 }
 
 // Sätt en task som klar
-function completeTask(taskName: string, updateTo: Status = "Slutförd", toggle?: boolean) {
+function completeTask(taskName: string, updateTo: "pågående" | "slutförd" | "toggle"): void
+{
     tasks.forEach(task => {
-        if (task.name === taskName && toggle) {
-            // kod för att toggla status här
-            task.status = (task.status === "Pågående") ? "Slutförd" : "Pågående";
-            console.log(`Växlade statusen för uppgiften ${task.name}`)
+        if (task.name === taskName && updateTo === "toggle")
+        {
+            task.status = (task.status === "pågående") ? "slutförd" : "pågående";
+            console.log(`Växlade statusen för uppgiften: ${task.name}`)
         }
-        else if (task.name === taskName) {
+        else if (task.name === taskName && (updateTo === "pågående" || updateTo === "slutförd") )
+        {
             task.status = updateTo;
-            console.log(`Ändrade statusen till ${updateTo} för uppgiften ${task.name}`);
+            console.log(`Ändrade statusen till "${updateTo}" för uppgiften: ${task.name}`);
         }
-        
-        /*/
-        if (task.name == taskName && task.status) {
-            task.completed = true;
-            console.log(`Markerade uppgift som avklarad: ${task.name}`);
-        }
-        else if (task.name == taskName && task.completed) {
-            console.log(`Uppgift redan avklarad: ${task.name}`);
-        }
-        //*/
     });
 }
 
-
-
 // Skapa en funktion som skriver ut vår "header" i konsolen.
-function showHeader() {
+function showHeader(): void
+{
     console.log(`
     ///==============================\\\\\\
     |||         TASK TRACKER         |||
@@ -106,19 +97,20 @@ function showHeader() {
 }
 
 // Skapa en funktion som skriver ut alla våra tasks i en lista i konsolen.
-function showAllTasks() {
+function showAllTasks(): void
+{
     if (tasks.length > 0)
     {
         console.log(`\t===========
      UPPGIFTER
     ===========`);
 
-        for (let i = 0; i < tasks.length; i++) {
+        for (let i: number = 0; i < tasks.length; i++) {
             let output: string = "";
 
-            output += `${i+1}) ${tasks[i]?.name}\n`;
-            output += `   Status: ${tasks[i]?.status}\n`;
-            output += `   Prioritet: ${tasks[i]?.priority}`;
+            output += `${i+1}) ${tasks[i]?.name}\n`
+                   + `   Status: ${tasks[i]?.status}\n`
+                   + `   Prioritet: ${tasks[i]?.priority}`;
 
             console.log(output);
         }
@@ -128,8 +120,8 @@ function showAllTasks() {
     }
 }
 
-// Visar upp alla tasks som är antingen "Pågående" eller "Slutförd"
-function showTaskByStatus(status: Status)
+// Visar upp alla tasks som är antingen "pågående" eller "slutförd"
+function showTaskByStatus(status: Status): void
 {
     let output: string = "";
 
@@ -139,7 +131,7 @@ function showTaskByStatus(status: Status)
         }
     });
 
-    if (status === "Pågående") {
+    if (status === "pågående") {
         console.log(`\t====================
      PÅGÅENDE UPPGIFTER
     ====================`);
@@ -154,7 +146,7 @@ function showTaskByStatus(status: Status)
 }
 
 // Visa tasks med viss prioritet
-function showTaskByPriority(priorityLvl: PriorityLevels)
+function showTaskOfPriority(priorityLvl: PriorityLevels): void
 {
     let output: string = "";
 
@@ -164,12 +156,12 @@ function showTaskByPriority(priorityLvl: PriorityLevels)
         }
     });
 
-    if (priorityLvl === "Hög") {
+    if (priorityLvl === "hög") {
         console.log(`\t===============
      HÖG PRIORITET
     ===============`);
     }
-    else if (priorityLvl === "Medel") {
+    else if (priorityLvl === "medel") {
         console.log(`\t====================
      MEDELHÖG PRIORITET
     ====================`);
@@ -183,36 +175,68 @@ function showTaskByPriority(priorityLvl: PriorityLevels)
     console.log(output);
 }
 
-// Visa statistik på antal tasks, hur många avklarade, hur många ej avklarade tasks
-/*/
-function showStatistics() {
-    let completedTasks: number = 0;
-    let pendingTasks: number = 0;
+// visa tasks sorterat efter priority
+function showPrioritySortedTasks(highToLow: boolean = true): void
+{
+    const highPriorityTasks: string[] = [];
+    const mediumPriorityTasks: string[] = [];
+    const lowPriorityTasks: string[] = [];
 
     tasks.forEach(task => {
-        if (task.completed == true) {
-            completedTasks++;
-        }
-        if (task.completed == false) {
-            pendingTasks++;
+        switch (task.priority) {
+            case "hög":
+                highPriorityTasks.push(task.name);
+            break;
+
+            case "medel":
+                mediumPriorityTasks.push(task.name);
+            break;
+
+            case "låg":
+                lowPriorityTasks.push(task.name);
+            break;
         }
     });
 
+    console.log(`\t===================
+     PRIORITETSORDNING
+    ===================`);
+
+    console.log(highPriorityTasks);
+    console.log(mediumPriorityTasks);
+    console.log(lowPriorityTasks);
+
+    if (highToLow)
+    {
+        console.log(``);
+    }
+}
+
+// Visa statistik på antal tasks, hur många avklarade, hur många ej avklarade tasks
+function showStatistics(): void
+{
+    let completedTasks: number = 0;
+    let pendingTasks: number = 0;
+    let output: string = "";
+
+    tasks.forEach(task => {
+        (task.status === "slutförd") ? completedTasks++ : pendingTasks++;
+    });
+
     const comletionRate: number = completedTasks / tasks.length * 100;
+    output += `Totalt antal uppgifter: ${tasks.length}\n`
+           + `Slutförda uppgifter: ${completedTasks}\n`
+           + `Pågående uppgifter: ${pendingTasks}\n`
+           + `Andel avklarade: ${comletionRate.toFixed(1)}%`;
+    
     console.log(`\t===========
      STATISTIK
     ===========`);
-    console.log(`Totalt antal uppgifter: ${tasks.length}
-Antal avklarade uppgifter: ${completedTasks}
-Antal ej avklarade uppgifter: ${pendingTasks}
-Andel avklarade uppgifter: ${comletionRate.toFixed(1)}%`);
+    console.log(output);
 }
-//*/
 
 showHeader();
 
-showTaskByStatus("Pågående");
-showTaskByStatus("Slutförd");
+// showAllTasks();
 
-completeTask("Plugga");
-completeTask("Tvätta");
+showPrioritySortedTasks();
