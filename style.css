@@ -1,8 +1,43 @@
 
-.task-card {
-    border: 2px solid black;
-    padding-inline: 1rem;
-    margin-block-end: 1rem;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-    max-width: 400px;
+.task-counter {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-grid-container {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.task-card {
+    padding-inline: 1rem;
+    background-color: white;
+    border-left: 0.5rem solid black;
+    border-radius: 0.3rem 1rem 1rem 0.3rem;
+
+    &.pending {
+        background-color: oklch(82.825% 0.03934 231.243);
+    }
+
+    &.completed {
+        background-color: palegreen;
+        background-color: oklch(94.925% 0.0507 131.822);
+    }
+
+    &.prio-high {
+        border-color: crimson;
+    }
+
+    &.prio-medium {
+        border-color: gold;
+    }
+
+    &.prio-low {
+        border-color: limegreen;
+    }
 }

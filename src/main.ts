@@ -60,8 +60,8 @@ const tasks: Task[] = [
 
 // DOM variabler
 const appElement = document.querySelector("#app");
-
-
+const gridContainer = document.createElement("div");
+gridContainer.classList.add("card-grid-container");
 
 
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
@@ -95,13 +95,36 @@ function completeTask(taskName: string, updateTo: "pågående" | "slutförd" | "
 // En funktion som renderar ut alla tasks på sidan
 function renderAllTasks(): void
 {
-    if (appElement) {
-        appElement.innerHTML = "";
-    }
+    // if (appElement) {
+    //     appElement.innerHTML = "";
+    // }
+
+    gridContainer.innerHTML = "";
+
+    appElement?.append(gridContainer);
+
 
     tasks.forEach(task => {
         const card = document.createElement("div");
         card.classList.add("task-card");
+
+        // Ge olika styling beroende på status
+        (task.status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
+
+        // Ge olika styling beroende på prioritet
+        switch (task.priority) {
+            case "hög":
+                card.classList.add("prio-high");
+            break;
+
+            case "medel":
+                card.classList.add("prio-medium");
+            break;
+
+            case "låg":
+                card.classList.add("prio-low");
+            break;
+        }
 
         const taskName = document.createElement("h3");
         taskName.textContent = task.name;
@@ -116,22 +139,41 @@ function renderAllTasks(): void
         card.append(taskStatus);
         card.append(taskPriority);
 
-        appElement?.append(card);
+        // appElement?.append(card);
+        gridContainer.append(card);
     });
 }
 
 // Visar en task efter sitt namn
-function renderTask(taskName: string)
+function renderTask(taskName: string, clearApp: boolean = false): void
 {
     tasks.forEach(task => {
         if (task.name === taskName)
         {
-            if (appElement) {
+            if (appElement && clearApp) {
                 appElement.innerHTML = "";
             }
 
             const card = document.createElement("div");
             card.classList.add("task-card");
+
+            // Ge olika styling beroende på status
+            (task.status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
+
+            // Ge olika styling beroende på prioritet
+            switch (task.priority) {
+                case "hög":
+                    card.classList.add("prio-high");
+                break;
+
+                case "medel":
+                    card.classList.add("prio-medium");
+                break;
+
+                case "låg":
+                    card.classList.add("prio-low");
+                break;
+            }
 
             const taskName = document.createElement("h3");
             taskName.textContent = task.name;
@@ -146,11 +188,22 @@ function renderTask(taskName: string)
             card.append(taskStatus);
             card.append(taskPriority);
 
-            appElement?.append(card);
+            // Lägger till tasken i gridcontainern om en sådan finns. Annars läggs den direkt i appen.
+            (gridContainer) ? gridContainer.append(card) : appElement?.append(card);
         }
     });
 }
 
+// Visa antal tasks högst upp
+function renderTaskCounter ()
+{
+    const taskCounter = document.createElement("p");
+    taskCounter.classList.add("task-counter");
+    taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
+    appElement?.append(taskCounter);
+}
+
+renderTaskCounter();
 renderAllTasks();
 // renderTask("Handla");
 
@@ -168,7 +221,8 @@ renderAllTasks();
 
 
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 // Skapa en funktion som skriver ut vår "header" i konsolen.
