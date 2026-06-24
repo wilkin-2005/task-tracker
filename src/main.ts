@@ -58,6 +58,12 @@ const tasks: Task[] = [
 ];
 
 
+// DOM variabler
+const appElement = document.querySelector("#app");
+
+
+
+
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
 function addTask(taskName: string, taskPriority: PriorityLevels): void
 {
@@ -86,6 +92,85 @@ function completeTask(taskName: string, updateTo: "pågående" | "slutförd" | "
     });
 }
 
+// En funktion som renderar ut alla tasks på sidan
+function renderAllTasks(): void
+{
+    if (appElement) {
+        appElement.innerHTML = "";
+    }
+
+    tasks.forEach(task => {
+        const card = document.createElement("div");
+        card.classList.add("task-card");
+
+        const taskName = document.createElement("h3");
+        taskName.textContent = task.name;
+
+        const taskStatus = document.createElement("p");
+        taskStatus.textContent = `Status: ${task.status}`;
+
+        const taskPriority = document.createElement("p");
+        taskPriority.textContent = `Prioritet: ${task.priority}`;
+
+        card.append(taskName);
+        card.append(taskStatus);
+        card.append(taskPriority);
+
+        appElement?.append(card);
+    });
+}
+
+// Visar en task efter sitt namn
+function renderTask(taskName: string)
+{
+    tasks.forEach(task => {
+        if (task.name === taskName)
+        {
+            if (appElement) {
+                appElement.innerHTML = "";
+            }
+
+            const card = document.createElement("div");
+            card.classList.add("task-card");
+
+            const taskName = document.createElement("h3");
+            taskName.textContent = task.name;
+
+            const taskStatus = document.createElement("p");
+            taskStatus.textContent = `Status: ${task.status}`;
+
+            const taskPriority = document.createElement("p");
+            taskPriority.textContent = `Prioritet: ${task.priority}`;
+
+            card.append(taskName);
+            card.append(taskStatus);
+            card.append(taskPriority);
+
+            appElement?.append(card);
+        }
+    });
+}
+
+renderAllTasks();
+// renderTask("Handla");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+
+
 // Skapa en funktion som skriver ut vår "header" i konsolen.
 function showHeader(): void
 {
@@ -94,30 +179,6 @@ function showHeader(): void
     |||         TASK TRACKER         |||
     \\\\\\==============================///
     `);
-}
-
-// Skapa en funktion som skriver ut alla våra tasks i en lista i konsolen.
-function showAllTasks(): void
-{
-    if (tasks.length > 0)
-    {
-        console.log(`\t===========
-     UPPGIFTER
-    ===========`);
-
-        for (let i: number = 0; i < tasks.length; i++) {
-            let output: string = "";
-
-            output += `${i+1}) ${tasks[i]?.name}\n`
-                   + `   Status: ${tasks[i]?.status}\n`
-                   + `   Prioritet: ${tasks[i]?.priority}`;
-
-            console.log(output);
-        }
-    }
-    else {
-        console.log("!! Inga aktiva uppgifter !!");
-    }
 }
 
 // Visar upp alla tasks som är antingen "pågående" eller "slutförd"
@@ -235,8 +296,5 @@ function showStatistics(): void
     console.log(output);
 }
 
-showHeader();
-
+// showHeader();
 // showAllTasks();
-
-showPrioritySortedTasks();

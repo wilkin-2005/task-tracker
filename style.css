@@ -1,0 +1,8 @@
+
+.task-card {
+    border: 2px solid black;
+    padding-inline: 1rem;
+    margin-block-end: 1rem;
+
+    max-width: 400px;
+}
