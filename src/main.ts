@@ -59,8 +59,23 @@ const tasks: Task[] = [
 
 
 // DOM variabler
+const taskInput = document.querySelector("#task-input") as HTMLInputElement;
+const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
+const addTaskButton = document.querySelector("#add-task-button") as HTMLButtonElement;
+
+addTaskButton.addEventListener("click", () => {
+    console.log("Knapp klickad!");
+
+    const taskName: string = taskInput.value; // .trim();
+    const taskPriority = priorityInput.value as PriorityLevels;
+
+    addTask(taskName, taskPriority);
+    taskInput.value = "";
+})
+
 const taskCounter = document.querySelector("#task-counter");
 const appElement = document.querySelector("#app");
+
 const gridContainer = document.createElement("div");
 gridContainer.classList.add("card-grid-container");
 
@@ -74,6 +89,8 @@ function addTask(taskName: string, taskPriority: PriorityLevels): void
         priority: taskPriority,
     });
     console.log(`Lade till ny uppgift: "${taskName}"`);
+
+    renderAllTasks();
 }
 
 // Sätt en task som klar
@@ -98,14 +115,8 @@ function updateTaskStatus(taskName: string, toogle: boolean = true, updateTo?: S
 // En funktion som renderar ut alla tasks på sidan
 function renderAllTasks(): void
 {
-    // if (appElement) {
-    //     appElement.innerHTML = "";
-    // }
-
     gridContainer.innerHTML = "";
-
     appElement?.append(gridContainer);
-
 
     tasks.forEach(task => {
         const card = document.createElement("div");
@@ -138,11 +149,11 @@ function renderAllTasks(): void
         const taskPriority = document.createElement("p");
         taskPriority.textContent = `Prioritet: ${task.priority}`;
 
-        card.append(taskName);
-        card.append(taskStatus);
-        card.append(taskPriority);
-
-        // appElement?.append(card);
+        card.append(
+            taskName,
+            taskStatus,
+            taskPriority
+        );
         gridContainer.append(card);
     });
 }
@@ -187,9 +198,11 @@ function renderTask(taskName: string, clearApp: boolean = false): void
             const taskPriority = document.createElement("p");
             taskPriority.textContent = `Prioritet: ${task.priority}`;
 
-            card.append(taskName);
-            card.append(taskStatus);
-            card.append(taskPriority);
+            card.append(
+                taskName,
+                taskStatus,
+                taskPriority
+            );
 
             // Lägger till tasken i gridcontainern om en sådan finns. Annars läggs den direkt i appen.
             (gridContainer) ? gridContainer.append(card) : appElement?.append(card);
