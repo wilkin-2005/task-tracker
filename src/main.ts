@@ -59,6 +59,7 @@ const tasks: Task[] = [
 
 
 // DOM variabler
+const taskCounter = document.querySelector("#task-counter");
 const appElement = document.querySelector("#app");
 const gridContainer = document.createElement("div");
 gridContainer.classList.add("card-grid-container");
@@ -75,24 +76,23 @@ function addTask(taskName: string, taskPriority: PriorityLevels): void
     console.log(`Lade till ny uppgift: "${taskName}"`);
 }
 
-
-
-// Ha istället: function updateStatus(taskName: string, toogle: boolean = true, updateTo?: Status)
 // Sätt en task som klar
-function completeTask(taskName: string, updateTo: "pågående" | "slutförd" | "toggle"): void
+function updateTaskStatus(taskName: string, toogle: boolean = true, updateTo?: Status): void
 {
     tasks.forEach(task => {
-        if (task.name === taskName && updateTo === "toggle")
+        if (task.name === taskName && toogle)
         {
             task.status = (task.status === "pågående") ? "slutförd" : "pågående";
             console.log(`Växlade statusen för uppgiften: ${task.name}`)
         }
-        else if (task.name === taskName && (updateTo === "pågående" || updateTo === "slutförd") )
+        else if (task.name === taskName && updateTo !== undefined)
         {
             task.status = updateTo;
             console.log(`Ändrade statusen till "${updateTo}" för uppgiften: ${task.name}`);
         }
     });
+
+    renderAllTasks();
 }
 
 // En funktion som renderar ut alla tasks på sidan
@@ -200,10 +200,9 @@ function renderTask(taskName: string, clearApp: boolean = false): void
 // Visa antal tasks högst upp
 function renderTaskCounter ()
 {
-    const taskCounter = document.createElement("p");
-    taskCounter.classList.add("task-counter");
-    taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
-    appElement?.append(taskCounter);
+    if (taskCounter) {
+        taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
+    }
 }
 
 renderTaskCounter();

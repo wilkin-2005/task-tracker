@@ -3,7 +3,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.task-counter {
+#task-counter {
     font-size: 1.2rem;
     font-weight: bold;
 }
@@ -16,31 +16,29 @@ body {
 
 .task-card {
     padding-inline: 1rem;
-    background-color: white;
-    border-left: 0.5rem solid black;
+    background-color: #f9f9f9;
+    border: 1px solid #f1f1f1;
+    border-left: 8px solid black;
     border-radius: 0.3rem 1rem 1rem 0.3rem;
 
-    &.pending {
+    /* &.pending {
         background-color: oklch(82.825% 0.03934 231.243);
-    }
+    } */
 
     &.completed {
-        background-color: palegreen;
-        background-color: oklch(94.925% 0.0507 131.822);
-
-        /* opacity: 0.6;
-        text-decoration: line-through; */
+        opacity: 0.6;
+        text-decoration: line-through;
     }
 
     &.prio-high {
-        border-color: crimson;
+        border-left-color: crimson;
     }
 
     &.prio-medium {
-        border-color: gold;
+        border-left-color: gold;
     }
 
     &.prio-low {
-        border-color: limegreen;
+        border-left-color: limegreen;
     }
 }
