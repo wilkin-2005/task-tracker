@@ -75,6 +75,9 @@ function addTask(taskName: string, taskPriority: PriorityLevels): void
     console.log(`Lade till ny uppgift: "${taskName}"`);
 }
 
+
+
+// Ha istället: function updateStatus(taskName: string, toogle: boolean = true, updateTo?: Status)
 // Sätt en task som klar
 function completeTask(taskName: string, updateTo: "pågående" | "slutförd" | "toggle"): void
 {

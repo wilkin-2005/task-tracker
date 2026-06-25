@@ -27,6 +27,9 @@ body {
     &.completed {
         background-color: palegreen;
         background-color: oklch(94.925% 0.0507 131.822);
+
+        /* opacity: 0.6;
+        text-decoration: line-through; */
     }
 
     &.prio-high {
