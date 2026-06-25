@@ -11,7 +11,7 @@ body {
 .card-grid-container {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
 }
 
 .task-card {
@@ -22,6 +22,11 @@ body {
     border: 1px solid #f0f0f0;
     border-left: 8px solid black;
     border-radius: 0.3rem 1rem 1rem 0.3rem;
+
+
+    button:first-of-type {
+        margin-inline-end: 0.5rem;
+    }
 
     /* &.pending {
         background-color: oklch(82.825% 0.03934 231.243);

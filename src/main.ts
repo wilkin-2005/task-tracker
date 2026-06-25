@@ -9,6 +9,7 @@ type Status = "pågående" | "slutförd";
 type PriorityLevels = "låg" | "medel" | "hög";
 
 type Task = {
+    id: number;
     name: string;
     status: Status;
     priority: PriorityLevels;
@@ -16,41 +17,50 @@ type Task = {
     notes?: string;
 };
 
+let nextId = 0;
+
 // En array med flertalet objekt av typen Task
-const tasks: Task[] = [
+let tasks: Task[] = [
     {
+        id: nextId++,
         name: "Lära mig Typescript",
         status: "pågående",
         priority: "hög",
         description: "Var med på föreläsningar och gör uppgifterna läraren ger dig.",
     },
     {
+        id: nextId++,
         name: "Vattna blommorna",
         status: "pågående",
         priority: "hög"
     },
     {
+        id: nextId++,
         name: "Fira midsommar",
         status: "slutförd",
         priority: "medel",
         description: "Äta tårta, grilla och spela sällskapsspel med vänner."
     },
     {
+        id: nextId++,
         name: "Träna",
         status: "slutförd",
         priority: "medel"
     },
     {
+        id: nextId++,
         name: "Handla",
         status: "slutförd",
         priority: "låg"
     },
     {
+        id: nextId++,
         name: "Tvätta",
         status: "slutförd",
         priority: "låg"
     },
     {
+        id: nextId++,
         name: "Plugga",
         status: "pågående",
         priority: "hög"
@@ -87,24 +97,34 @@ gridContainer.classList.add("card-grid-container");
 function addTask(taskName: string, taskPriority: PriorityLevels): void
 {
     tasks.push({
+        id: nextId,
         name: taskName,
         status: "pågående",
         priority: taskPriority,
     });
-    
+
+    nextId++;
     renderAllTasks();
 }
 
+// Raderar vald uppgift
+function deleteTask(taskId: number): void
+{
+    tasks = tasks.filter((task) => task.id !== taskId);
+    renderAllTasks();
+}
+
+
 // Sätt en task som klar
-function updateTaskStatus(taskName: string, toogle: boolean, updateTo?: Status): void
+function updateTaskStatus(taskId: number, toogle: boolean, updateTo?: Status): void
 {
     tasks.forEach(task => {
-        if (task.name === taskName && toogle)
+        if (task.id === taskId && toogle)
         {
             // Växlar statusen för uppgiften
             task.status = (task.status === "pågående") ? "slutförd" : "pågående";
         }
-        else if (task.name === taskName && updateTo !== undefined)
+        else if (task.id === taskId && updateTo !== undefined)
         {
             // Ändrar uppgiftens status till det bestämda värdet
             task.status = updateTo;
@@ -112,6 +132,14 @@ function updateTaskStatus(taskName: string, toogle: boolean, updateTo?: Status):
     });
 
     renderAllTasks();
+}
+
+// Visa antal tasks högst upp
+function renderTaskCounter(): void
+{
+    if (taskCounter) {
+        taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
+    }
 }
 
 // En funktion som renderar ut alla tasks på sidan
@@ -152,22 +180,32 @@ function renderAllTasks(): void
         taskPriority.textContent = `Prioritet: ${task.priority}`;
 
         const completeBtn = document.createElement("button");
-
         (task.status === "pågående") ? completeBtn.textContent = "Markera som slutförd" : completeBtn.textContent = "Markera som ej slutförd";
         
         completeBtn.addEventListener("click", () => {
-            updateTaskStatus(task.name, true);
-            renderAllTasks();
+            updateTaskStatus(task.id, true);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Radera uppgift";
+
+        deleteBtn.addEventListener("click", () => {
+            deleteTask(task.id);
         });
 
         card.append(
             taskName,
             taskStatus,
             taskPriority,
-            completeBtn
+            completeBtn,
+            deleteBtn
         );
         gridContainer.append(card);
     });
+
+    renderTaskCounter();
+    console.log(tasks);
+    console.log("nextId = " + nextId);
 }
 
 // Visar en task efter sitt namn
@@ -222,19 +260,7 @@ function renderTask(taskName: string, clearApp: boolean = false): void
     });
 }
 
-// Visa antal tasks högst upp
-function renderTaskCounter ()
-{
-    if (taskCounter) {
-        taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
-    }
-}
-
-renderTaskCounter();
 renderAllTasks();
-// renderTask("Handla");
-
-
 
 
 
