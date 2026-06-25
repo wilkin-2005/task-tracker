@@ -64,14 +64,17 @@ const priorityInput = document.querySelector("#priority-input") as HTMLSelectEle
 const addTaskButton = document.querySelector("#add-task-button") as HTMLButtonElement;
 
 addTaskButton.addEventListener("click", () => {
-    console.log("Knapp klickad!");
-
-    const taskName: string = taskInput.value; // .trim();
+    const taskName: string = taskInput.value.trim();
     const taskPriority = priorityInput.value as PriorityLevels;
+
+    if (taskName === "") {
+        console.log("Ogiltigt nam");
+        return;
+    }
 
     addTask(taskName, taskPriority);
     taskInput.value = "";
-})
+});
 
 const taskCounter = document.querySelector("#task-counter");
 const appElement = document.querySelector("#app");
@@ -88,24 +91,23 @@ function addTask(taskName: string, taskPriority: PriorityLevels): void
         status: "pågående",
         priority: taskPriority,
     });
-    console.log(`Lade till ny uppgift: "${taskName}"`);
-
+    
     renderAllTasks();
 }
 
 // Sätt en task som klar
-function updateTaskStatus(taskName: string, toogle: boolean = true, updateTo?: Status): void
+function updateTaskStatus(taskName: string, toogle: boolean, updateTo?: Status): void
 {
     tasks.forEach(task => {
         if (task.name === taskName && toogle)
         {
+            // Växlar statusen för uppgiften
             task.status = (task.status === "pågående") ? "slutförd" : "pågående";
-            console.log(`Växlade statusen för uppgiften: ${task.name}`)
         }
         else if (task.name === taskName && updateTo !== undefined)
         {
+            // Ändrar uppgiftens status till det bestämda värdet
             task.status = updateTo;
-            console.log(`Ändrade statusen till "${updateTo}" för uppgiften: ${task.name}`);
         }
     });
 
@@ -149,10 +151,20 @@ function renderAllTasks(): void
         const taskPriority = document.createElement("p");
         taskPriority.textContent = `Prioritet: ${task.priority}`;
 
+        const completeBtn = document.createElement("button");
+
+        (task.status === "pågående") ? completeBtn.textContent = "Markera som slutförd" : completeBtn.textContent = "Markera som ej slutförd";
+        
+        completeBtn.addEventListener("click", () => {
+            updateTaskStatus(task.name, true);
+            renderAllTasks();
+        });
+
         card.append(
             taskName,
             taskStatus,
-            taskPriority
+            taskPriority,
+            completeBtn
         );
         gridContainer.append(card);
     });
@@ -238,17 +250,6 @@ renderAllTasks();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// Skapa en funktion som skriver ut vår "header" i konsolen.
-function showHeader(): void
-{
-    console.log(`
-    ///==============================\\\\\\
-    |||         TASK TRACKER         |||
-    \\\\\\==============================///
-    `);
-}
 
 // Visar upp alla tasks som är antingen "pågående" eller "slutförd"
 function showTaskByStatus(status: Status): void
@@ -364,6 +365,3 @@ function showStatistics(): void
     ===========`);
     console.log(output);
 }
-
-// showHeader();
-// showAllTasks();
