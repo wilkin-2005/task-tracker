@@ -71,26 +71,29 @@ let tasks: Task[] = [
 // DOM variabler
 const taskInput = document.querySelector("#task-input") as HTMLInputElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
-const addTaskButton = document.querySelector("#add-task-button") as HTMLButtonElement;
-
-addTaskButton.addEventListener("click", () => {
-    const taskName: string = taskInput.value.trim();
-    const taskPriority = priorityInput.value as PriorityLevels;
-
-    if (taskName === "") {
-        console.log("Ogiltigt nam");
-        return;
-    }
-
-    addTask(taskName, taskPriority);
-    taskInput.value = "";
-});
+const form = document.querySelector("#task-form") as HTMLFormElement;
+form.addEventListener("submit", handleSubmit);
 
 const taskCounter = document.querySelector("#task-counter");
 const appElement = document.querySelector("#app");
-
 const gridContainer = document.createElement("div");
 gridContainer.classList.add("card-grid-container");
+
+
+// Hanterar submits från formuläret för att lägga till nya uppgifter
+function handleSubmit(event: SubmitEvent): void
+{
+    event.preventDefault();
+    console.log("Formulär inskickat");
+
+    /* if (taskName === "") {
+        console.log("Ogiltigt nam");
+        return;
+    } */
+
+    // addTask(taskName, taskPriority);
+    // taskInput.value = "";
+}
 
 
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
@@ -204,8 +207,8 @@ function renderAllTasks(): void
     });
 
     renderTaskCounter();
-    console.log(tasks);
-    console.log("nextId = " + nextId);
+    // console.log(tasks);
+    // console.log("nextId = " + nextId);
 }
 
 // Visar en task efter sitt namn

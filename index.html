@@ -10,17 +10,26 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>Task-Tracker</h1>
+    <header>
+        <h1>Task-Tracker</h1>
+    </header>
 
-    <!-- <form> -->
-        <input id="task-input" type="text" placeholder="Ny uppgift">
+    <form id="task-form">
+        <h2>Lägg till en ny uppgift</h2>
+
+        <label class="form-label" for="task-input">Lägg till namn</label>
+        <input id="task-input" type="text" placeholder="Ny uppgift namn">
+
+        <label class="form-label" for="priority-input">Välj prioritet</label>
         <select id="priority-input">
+            <option value="" disabled selected>Välj prioritet</option>
             <option value="låg">Låg</option>
             <option value="medel">Medel</option>
             <option value="hög">Hög</option>
         </select>
-        <button id="add-task-button">Lägg till uppgift</button>
-    <!-- </form> -->
+
+        <button type="submit">Lägg till uppgift</button> <!-- id="add-task-button" -->
+    </form>
 
     <p id="task-counter">Totalt antal uppgifter:</p>
     <div id="app"></div>
