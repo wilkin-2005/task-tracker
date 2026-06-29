@@ -150,13 +150,17 @@ function deleteTask(taskId: number): void
 function updateTaskStatus(taskId: number, toggle: boolean = true, updateTo?: Status): void
 {
     tasks.forEach(task => {
-        if (task.id === taskId && toggle)
-        {
+        // Destructuring av task
+        const {
+            id,
+            status,
+        } = task;
+
+        if (id === taskId && toggle) {
             // Växlar statusen för uppgiften
-            task.status = (task.status === "pågående") ? "slutförd" : "pågående";
+            task.status = (status === "pågående") ? "slutförd" : "pågående";
         }
-        else if (task.id === taskId && updateTo !== undefined)
-        {
+        else if (id === taskId && updateTo !== undefined) {
             // Ändrar uppgiftens status till det bestämda värdet
             task.status = updateTo;
         }
@@ -180,33 +184,41 @@ function renderAllTasks(): void
     appElement?.append(gridContainer);
 
     tasks.forEach(task => {
+        // Destructuring av task
+        const {
+            id,
+            name,
+            status,
+            priority
+        } = task;
+
         const card = document.createElement("div");
         card.classList.add("task-card");
 
         taskCardStyling(task, card);
 
         const taskName = document.createElement("h3");
-        taskName.textContent = task.name;
+        taskName.textContent = name;
 
         const taskStatus = document.createElement("p");
-        taskStatus.textContent = `Status: ${task.status}`;
+        taskStatus.textContent = `Status: ${status}`;
 
         const taskPriority = document.createElement("p");
-        taskPriority.textContent = `Prioritet: ${task.priority}`;
+        taskPriority.textContent = `Prioritet: ${priority}`;
 
         // Knappar för statusändring och radering
         const completeBtn = document.createElement("button");
-        (task.status === "pågående") ? completeBtn.textContent = "Markera som slutförd" : completeBtn.textContent = "Markera som ej slutförd";
+        (status === "pågående") ? completeBtn.textContent = "Markera som slutförd" : completeBtn.textContent = "Markera som ej slutförd";
         
         completeBtn.addEventListener("click", () => {
-            updateTaskStatus(task.id, true);
+            updateTaskStatus(id, true);
         });
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Radera uppgift";
         deleteBtn
         .addEventListener("click", () => {
-            deleteTask(task.id);
+            deleteTask(id);
         });
 
         // Placerar elementen i kortet
@@ -227,9 +239,15 @@ function renderAllTasks(): void
 // Ger task-korten olika styling beroende på deras status och prioritet
 function taskCardStyling(task: Task, card: HTMLDivElement): void
 {
-    (task.status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
+    // Destructuring av task
+    const {
+        status,
+        priority
+    } = task;
 
-    switch (task.priority) {
+    (status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
+
+    switch (priority) {
         case "hög":
             card.classList.add("prio-high");
         break;
@@ -249,7 +267,15 @@ function taskCardStyling(task: Task, card: HTMLDivElement): void
 function renderTask(taskId: number, clearApp: boolean = false): void
 {
     tasks.forEach(task => {
-        if (task.id === taskId)
+        // Destructuring av task
+        const {
+            id,
+            name,
+            status,
+            priority
+        } = task;
+
+        if (id === taskId)
         {
             if (appElement && clearApp) {
                 appElement.innerHTML = "";
@@ -261,13 +287,13 @@ function renderTask(taskId: number, clearApp: boolean = false): void
             taskCardStyling(task, card);
 
             const taskName = document.createElement("h3");
-            taskName.textContent = task.name;
+            taskName.textContent = name;
 
             const taskStatus = document.createElement("p");
-            taskStatus.textContent = `Status: ${task.status}`;
+            taskStatus.textContent = `Status: ${status}`;
 
             const taskPriority = document.createElement("p");
-            taskPriority.textContent = `Prioritet: ${task.priority}`;
+            taskPriority.textContent = `Prioritet: ${priority}`;
 
             card.append(
                 taskName,
