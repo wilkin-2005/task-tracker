@@ -71,6 +71,7 @@ let tasks: Task[] = [
 // DOM variabler
 const taskInput = document.querySelector("#task-input") as HTMLInputElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
+const errorMessage = document.querySelector("#error-message") as HTMLParagraphElement;
 const form = document.querySelector("#task-form") as HTMLFormElement;
 form.addEventListener("submit", handleSubmit);
 
@@ -84,15 +85,29 @@ gridContainer.classList.add("card-grid-container");
 function handleSubmit(event: SubmitEvent): void
 {
     event.preventDefault();
-    console.log("Formulär inskickat");
+    // console.log("Formulär inskickat");
 
-    /* if (taskName === "") {
-        console.log("Ogiltigt nam");
+    const taskName = taskInput.value.trim();
+    const priority = priorityInput.value as PriorityLevels;
+
+    if (taskName === "") {
+        errorMessage.textContent = "Ogiltigt namn";
         return;
-    } */
+    }
+    else if (taskName.length < 3 || taskName.length > 40) {
+        errorMessage.textContent = "Namnet måste vara mellan 3 till 40 tecken långt";
+        return;
+    }
 
-    // addTask(taskName, taskPriority);
-    // taskInput.value = "";
+    if (priority !== "hög" && priority !== "medel" && priority !== "låg") {
+        errorMessage.textContent = "Du måste välja en prioritetsnivå";
+        return;
+    }
+
+    addTask(taskName, priority);
+    errorMessage.textContent = "";
+    taskInput.value = "";
+    priorityInput.selectedIndex = 0;
 }
 
 
@@ -207,7 +222,7 @@ function renderAllTasks(): void
     });
 
     renderTaskCounter();
-    // console.log(tasks);
+    console.log(tasks);
     // console.log("nextId = " + nextId);
 }
 
