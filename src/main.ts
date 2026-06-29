@@ -85,31 +85,45 @@ gridContainer.classList.add("card-grid-container");
 function handleSubmit(event: SubmitEvent): void
 {
     event.preventDefault();
-    // console.log("Formulär inskickat");
 
     const taskName = taskInput.value.trim();
     const priority = priorityInput.value as PriorityLevels;
 
-    if (taskName === "") {
-        errorMessage.textContent = "Ogiltigt namn";
-        return;
-    }
-    else if (taskName.length < 3 || taskName.length > 40) {
-        errorMessage.textContent = "Namnet måste vara mellan 3 till 40 tecken långt";
+    if (!validateTask(taskName, priority) ) {
         return;
     }
 
-    if (priority !== "hög" && priority !== "medel" && priority !== "låg") {
-        errorMessage.textContent = "Du måste välja en prioritetsnivå";
-        return;
-    }
-
+    clearForm();
     addTask(taskName, priority);
+}
+
+// Rensar formuläret
+function clearForm(): void
+{
     errorMessage.textContent = "";
     taskInput.value = "";
     priorityInput.selectedIndex = 0;
 }
 
+// Kollar om en submitad ny task är godkänd
+function validateTask(taskName: string, priority: PriorityLevels): boolean
+{
+    if (taskName === "") {
+        errorMessage.textContent = "Ogiltigt namn";
+        return false;
+    }
+    else if (taskName.length < 3 || taskName.length > 40) {
+        errorMessage.textContent = "Namnet måste vara mellan 3 till 40 tecken långt";
+        return false;
+    }
+
+    if (priority !== "hög" && priority !== "medel" && priority !== "låg") {
+        errorMessage.textContent = "Du måste välja en prioritetsnivå";
+        return false;
+    }
+
+    return true;
+}
 
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
 function addTask(taskName: string, taskPriority: PriorityLevels): void
@@ -132,12 +146,11 @@ function deleteTask(taskId: number): void
     renderAllTasks();
 }
 
-
-// Sätt en task som klar
-function updateTaskStatus(taskId: number, toogle: boolean, updateTo?: Status): void
+// Uppdaterar statusen på vald task. Togglar som default
+function updateTaskStatus(taskId: number, toggle: boolean = true, updateTo?: Status): void
 {
     tasks.forEach(task => {
-        if (task.id === taskId && toogle)
+        if (task.id === taskId && toggle)
         {
             // Växlar statusen för uppgiften
             task.status = (task.status === "pågående") ? "slutförd" : "pågående";
@@ -170,23 +183,7 @@ function renderAllTasks(): void
         const card = document.createElement("div");
         card.classList.add("task-card");
 
-        // Ge olika styling beroende på status
-        (task.status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
-
-        // Ge olika styling beroende på prioritet
-        switch (task.priority) {
-            case "hög":
-                card.classList.add("prio-high");
-            break;
-
-            case "medel":
-                card.classList.add("prio-medium");
-            break;
-
-            case "låg":
-                card.classList.add("prio-low");
-            break;
-        }
+        taskCardStyling(task, card);
 
         const taskName = document.createElement("h3");
         taskName.textContent = task.name;
@@ -197,6 +194,7 @@ function renderAllTasks(): void
         const taskPriority = document.createElement("p");
         taskPriority.textContent = `Prioritet: ${task.priority}`;
 
+        // Knappar för statusändring och radering
         const completeBtn = document.createElement("button");
         (task.status === "pågående") ? completeBtn.textContent = "Markera som slutförd" : completeBtn.textContent = "Markera som ej slutförd";
         
@@ -206,11 +204,12 @@ function renderAllTasks(): void
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Radera uppgift";
-
-        deleteBtn.addEventListener("click", () => {
+        deleteBtn
+        .addEventListener("click", () => {
             deleteTask(task.id);
         });
 
+        // Placerar elementen i kortet
         card.append(
             taskName,
             taskStatus,
@@ -218,19 +217,39 @@ function renderAllTasks(): void
             completeBtn,
             deleteBtn
         );
+
         gridContainer.append(card);
     });
 
     renderTaskCounter();
-    console.log(tasks);
-    // console.log("nextId = " + nextId);
 }
 
-// Visar en task efter sitt namn
-function renderTask(taskName: string, clearApp: boolean = false): void
+// Ger task-korten olika styling beroende på deras status och prioritet
+function taskCardStyling(task: Task, card: HTMLDivElement): void
+{
+    (task.status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
+
+    switch (task.priority) {
+        case "hög":
+            card.classList.add("prio-high");
+        break;
+
+        case "medel":
+            card.classList.add("prio-medium");
+        break;
+
+        case "låg":
+            card.classList.add("prio-low");
+        break;
+    }
+}
+
+
+// Visar EN task efter sitt namn
+function renderTask(taskId: number, clearApp: boolean = false): void
 {
     tasks.forEach(task => {
-        if (task.name === taskName)
+        if (task.id === taskId)
         {
             if (appElement && clearApp) {
                 appElement.innerHTML = "";
@@ -239,23 +258,7 @@ function renderTask(taskName: string, clearApp: boolean = false): void
             const card = document.createElement("div");
             card.classList.add("task-card");
 
-            // Ge olika styling beroende på status
-            (task.status === "pågående") ? card.classList.add("pending") : card.classList.add("completed");
-
-            // Ge olika styling beroende på prioritet
-            switch (task.priority) {
-                case "hög":
-                    card.classList.add("prio-high");
-                break;
-
-                case "medel":
-                    card.classList.add("prio-medium");
-                break;
-
-                case "låg":
-                    card.classList.add("prio-low");
-                break;
-            }
+            taskCardStyling(task, card);
 
             const taskName = document.createElement("h3");
             taskName.textContent = task.name;
@@ -274,6 +277,8 @@ function renderTask(taskName: string, clearApp: boolean = false): void
 
             // Lägger till tasken i gridcontainern om en sådan finns. Annars läggs den direkt i appen.
             (gridContainer) ? gridContainer.append(card) : appElement?.append(card);
+
+            return;
         }
     });
 }
@@ -292,8 +297,9 @@ renderAllTasks();
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+/*/////////////////////////////////////////////////////////////////////////////////////////////////
+                Gamla funktioner från när sidan endast var i konsolen
+/////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 // Visar upp alla tasks som är antingen "pågående" eller "slutförd"
 function showTaskByStatus(status: Status): void
