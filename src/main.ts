@@ -1,7 +1,3 @@
-// Kompilera en gång: "npx tsc"
-// Automatisk kompilering: "npm run watch"
-
-
 // "pending" | "completed"
 type Status = "pågående" | "slutförd";
 
@@ -17,55 +13,8 @@ type Task = {
     notes?: string;
 };
 
+let tasks: Task[] = [];
 let nextId = 0;
-
-// En array med flertalet objekt av typen Task
-let tasks: Task[] = [
-    {
-        id: nextId++,
-        name: "Lära mig Typescript",
-        status: "pågående",
-        priority: "hög",
-        description: "Var med på föreläsningar och gör uppgifterna läraren ger dig.",
-    },
-    {
-        id: nextId++,
-        name: "Vattna blommorna",
-        status: "pågående",
-        priority: "hög"
-    },
-    {
-        id: nextId++,
-        name: "Fira midsommar",
-        status: "slutförd",
-        priority: "medel",
-        description: "Äta tårta, grilla och spela sällskapsspel med vänner."
-    },
-    {
-        id: nextId++,
-        name: "Träna",
-        status: "slutförd",
-        priority: "medel"
-    },
-    {
-        id: nextId++,
-        name: "Handla",
-        status: "slutförd",
-        priority: "låg"
-    },
-    {
-        id: nextId++,
-        name: "Tvätta",
-        status: "slutförd",
-        priority: "låg"
-    },
-    {
-        id: nextId++,
-        name: "Plugga",
-        status: "pågående",
-        priority: "hög"
-    }
-];
 
 
 // DOM variabler
@@ -79,6 +28,7 @@ const taskCounter = document.querySelector("#task-counter");
 const appElement = document.querySelector("#app");
 const gridContainer = document.createElement("div");
 gridContainer.classList.add("card-grid-container");
+
 
 
 // Hanterar submits från formuläret för att lägga till nya uppgifter
@@ -97,6 +47,8 @@ function handleSubmit(event: SubmitEvent): void
     addTask(taskName, priority);
 }
 
+
+
 // Rensar formuläret
 function clearForm(): void
 {
@@ -104,6 +56,8 @@ function clearForm(): void
     taskInput.value = "";
     priorityInput.selectedIndex = 0;
 }
+
+
 
 // Kollar om en submitad ny task är godkänd
 function validTask(taskName: string, priority: PriorityLevels): boolean
@@ -141,6 +95,8 @@ function validTask(taskName: string, priority: PriorityLevels): boolean
     return true;
 }
 
+
+
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
 function addTask(taskName: string, taskPriority: PriorityLevels): void
 {
@@ -152,15 +108,21 @@ function addTask(taskName: string, taskPriority: PriorityLevels): void
     });
 
     nextId++;
+    saveTasks();
     renderAllTasks();
 }
+
+
 
 // Raderar vald uppgift
 function deleteTask(taskId: number): void
 {
     tasks = tasks.filter((task) => task.id !== taskId);
+    saveTasks();
     renderAllTasks();
 }
+
+
 
 // Uppdaterar statusen på vald task. Togglar som default
 function updateTaskStatus(taskId: number, toggle: boolean = true, updateTo?: Status): void
@@ -182,8 +144,11 @@ function updateTaskStatus(taskId: number, toggle: boolean = true, updateTo?: Sta
         }
     });
 
+    saveTasks();
     renderAllTasks();
 }
+
+
 
 // Visa antal tasks högst upp
 function renderTaskCounter(): void
@@ -192,6 +157,8 @@ function renderTaskCounter(): void
         taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
     }
 }
+
+
 
 // En funktion som renderar ut alla tasks på sidan
 function renderAllTasks(): void
@@ -252,6 +219,8 @@ function renderAllTasks(): void
     renderTaskCounter();
 }
 
+
+
 // Ger task-korten olika styling beroende på deras status och prioritet
 function taskCardStyling(task: Task, card: HTMLDivElement): void
 {
@@ -279,181 +248,33 @@ function taskCardStyling(task: Task, card: HTMLDivElement): void
 }
 
 
-// Visar EN task efter sitt namn
-function renderTask(taskId: number, clearApp: boolean = false): void
+
+// Sparar alla tasks i Local Storage
+function saveTasks(): void
 {
-    tasks.forEach(task => {
-        // Destructuring av task
-        const {
-            id,
-            name,
-            status,
-            priority
-        } = task;
+    const tasks_json: string = JSON.stringify(tasks);
+    localStorage.setItem("savedTasks", tasks_json);
 
-        if (id === taskId)
-        {
-            if (appElement && clearApp) {
-                appElement.innerHTML = "";
-            }
-
-            const card = document.createElement("div");
-            card.classList.add("task-card");
-
-            taskCardStyling(task, card);
-
-            const taskName = document.createElement("h3");
-            taskName.textContent = name;
-
-            const taskStatus = document.createElement("p");
-            taskStatus.textContent = `Status: ${status}`;
-
-            const taskPriority = document.createElement("p");
-            taskPriority.textContent = `Prioritet: ${priority}`;
-
-            card.append(
-                taskName,
-                taskStatus,
-                taskPriority
-            );
-
-            // Lägger till tasken i gridcontainern om en sådan finns. Annars läggs den direkt i appen.
-            (gridContainer) ? gridContainer.append(card) : appElement?.append(card);
-
-            return;
-        }
-    });
+    const nextId_json: string = JSON.stringify(nextId);
+    localStorage.setItem("nextId", nextId_json);
 }
 
+
+
+// Läser in sparade tasks från Local Storage
+function loadTasks(): void
+{
+    const tasks_json = localStorage.getItem("savedTasks");
+    const nextId_json = localStorage.getItem("nextId")
+
+    if (tasks_json === null || nextId_json === null) {
+        return;
+    }
+
+    tasks = JSON.parse(tasks_json);
+    nextId = JSON.parse(nextId_json);
+}
+
+
+loadTasks();
 renderAllTasks();
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*/////////////////////////////////////////////////////////////////////////////////////////////////
-                Gamla funktioner från när sidan endast var i konsolen
-/////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-// Visar upp alla tasks som är antingen "pågående" eller "slutförd"
-function showTaskByStatus(status: Status): void
-{
-    let output: string = "";
-
-    tasks.forEach(task => {
-        if (task.status === status) {
-            output += `• ${task.name}\n`;
-        }
-    });
-
-    if (status === "pågående") {
-        console.log(`\t====================
-     PÅGÅENDE UPPGIFTER
-    ====================`);
-    }
-    else {
-        console.log(`\t=====================
-     SLUTFÖRDA UPPGIFTER
-    =====================`);
-    }
-
-    console.log(output);
-}
-
-// Visa tasks med viss prioritet
-function showTaskOfPriority(priorityLvl: PriorityLevels): void
-{
-    let output: string = "";
-
-    tasks.forEach(task => {
-        if (task.priority === priorityLvl) {
-            output += `• ${task.name}\n`;
-        }
-    });
-
-    if (priorityLvl === "hög") {
-        console.log(`\t===============
-     HÖG PRIORITET
-    ===============`);
-    }
-    else if (priorityLvl === "medel") {
-        console.log(`\t====================
-     MEDELHÖG PRIORITET
-    ====================`);
-    }
-    else {
-        console.log(`\t===============
-     LÅG PRIORITET
-    ===============`);
-    }
-
-    console.log(output);
-}
-
-// visa tasks sorterat efter priority
-function showPrioritySortedTasks(highToLow: boolean = true): void
-{
-    const highPriorityTasks: string[] = [];
-    const mediumPriorityTasks: string[] = [];
-    const lowPriorityTasks: string[] = [];
-
-    tasks.forEach(task => {
-        switch (task.priority) {
-            case "hög":
-                highPriorityTasks.push(task.name);
-            break;
-
-            case "medel":
-                mediumPriorityTasks.push(task.name);
-            break;
-
-            case "låg":
-                lowPriorityTasks.push(task.name);
-            break;
-        }
-    });
-
-    console.log(`\t===================
-     PRIORITETSORDNING
-    ===================`);
-
-    console.log(highPriorityTasks);
-    console.log(mediumPriorityTasks);
-    console.log(lowPriorityTasks);
-
-    if (highToLow)
-    {
-        console.log(``);
-    }
-}
-
-// Visa statistik på antal tasks, hur många avklarade, hur många ej avklarade tasks
-function showStatistics(): void
-{
-    let completedTasks: number = 0;
-    let pendingTasks: number = 0;
-    let output: string = "";
-
-    tasks.forEach(task => {
-        (task.status === "slutförd") ? completedTasks++ : pendingTasks++;
-    });
-
-    const comletionRate: number = completedTasks / tasks.length * 100;
-    output += `Totalt antal uppgifter: ${tasks.length}\n`
-           + `Slutförda uppgifter: ${completedTasks}\n`
-           + `Pågående uppgifter: ${pendingTasks}\n`
-           + `Andel avklarade: ${comletionRate.toFixed(1)}%`;
-    
-    console.log(`\t===========
-     STATISTIK
-    ===========`);
-    console.log(output);
-}
