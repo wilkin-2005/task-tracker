@@ -18,17 +18,19 @@ let nextId = 0;
 
 
 // DOM variabler
+const form = document.querySelector("#task-form") as HTMLFormElement;
+form.addEventListener("submit", handleSubmit);
 const taskInput = document.querySelector("#task-input") as HTMLInputElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
 const errorMessage = document.querySelector("#error-message") as HTMLParagraphElement;
-const form = document.querySelector("#task-form") as HTMLFormElement;
-form.addEventListener("submit", handleSubmit);
 
-const taskCounter = document.querySelector("#task-counter");
 const appElement = document.querySelector("#app");
 const gridContainer = document.createElement("div");
 gridContainer.classList.add("card-grid-container");
 
+const taskCounter = document.querySelector("#task-counter");
+const clearBtn = document.querySelector("#clear-button") as HTMLButtonElement;
+clearBtn.addEventListener("click", clearTasks);
 
 
 // Hanterar submits från formuläret för att lägga till nya uppgifter
@@ -153,7 +155,14 @@ function updateTaskStatus(taskId: number, toggle: boolean = true, updateTo?: Sta
 // Visa antal tasks högst upp
 function renderTaskCounter(): void
 {
-    if (taskCounter) {
+    if (!taskCounter) {
+        return;
+    }
+
+    if (tasks.length === 0) {
+        taskCounter.textContent = "Ännu inga uppgifter."
+    }
+    else {
         taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;
     }
 }
@@ -273,6 +282,21 @@ function loadTasks(): void
 
     tasks = JSON.parse(tasks_json);
     nextId = JSON.parse(nextId_json);
+}
+
+
+
+// Raderar alla tasks från Local Storage
+function clearTasks(): void
+{
+    if (tasks.length === 0 || !confirm("Är du säker? Vill du radera alla dina uppgifter permanent?") ) {
+        return;
+    }
+
+    tasks = [];
+    // localStorage.setItem("savedTasks", "");
+    localStorage.removeItem("savedTasks");
+    renderAllTasks();
 }
 
 
