@@ -14,8 +14,8 @@
         <h1>Task-Tracker</h1>
     </header>
 
-    <form id="task-form">
-        <h2>Lägg till en ny uppgift</h2>
+    <form id="task-form" aria-labelledby="form-header">
+        <h2 id="form-header">Lägg till en ny uppgift</h2>
 
         <label class="form-label" for="task-input">Lägg till namn</label>
         <input id="task-input" type="text" placeholder="Ny uppgift namn">
@@ -33,9 +33,9 @@
         <p id="error-message"></p>
     </form>
 
-    <div id="app"></div>
+    <section id="app" aria-label="Alla uppgifter"></section>
     
-    <section>
+    <section id="info--delete" aria-label="Information om och radera alla uppgifter">
         <span id="task-counter">Totalt antal uppgifter:</span>
         <span id="last-saved">Senast sparad:</span>
         <button type="button" id="clear-button">Radera alla uppgifter</button>

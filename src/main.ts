@@ -189,6 +189,7 @@ function renderAllTasks(): void
 
         const card = document.createElement("div");
         card.classList.add("task-card");
+        card.ariaLabel = "Uppgiftskort";
 
         taskCardStyling(task, card);
 
