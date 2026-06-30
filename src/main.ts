@@ -22,8 +22,10 @@ let lastSaved: string = "30 juni 2026 13:37";
 // DOM variabler
 const form = document.querySelector("#task-form") as HTMLFormElement;
 form.addEventListener("submit", handleSubmit);
-const taskInput = document.querySelector("#task-input") as HTMLInputElement;
+const nameInput = document.querySelector("#task-name") as HTMLInputElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
+// const descriptionInput = document.querySelector("#description-input") as HTMLTextAreaElement;
+
 const errorMessage = document.querySelector("#error-message") as HTMLParagraphElement;
 
 const appElement = document.querySelector("#app");
@@ -41,8 +43,9 @@ function handleSubmit(event: SubmitEvent): void
 {
     event.preventDefault();
 
-    const taskName = taskInput.value.trim();
+    const taskName: string = nameInput.value.trim();
     const priority = priorityInput.value as PriorityLevels;
+    // const description: string = descriptionInput.value;
 
     if (!validTask(taskName, priority) ) {
         return;
@@ -58,7 +61,7 @@ function handleSubmit(event: SubmitEvent): void
 function clearForm(): void
 {
     errorMessage.textContent = "";
-    taskInput.value = "";
+    nameInput.value = "";
     priorityInput.selectedIndex = 0;
 }
 
@@ -105,11 +108,13 @@ function validTask(taskName: string, priority: PriorityLevels): boolean
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
 function addTask(taskName: string, taskPriority: PriorityLevels): void
 {
+    //, taskDescription: string = ""
     tasks.push({
         id: nextId,
         name: taskName,
         status: "pågående",
         priority: taskPriority,
+        // description: taskDescription,
     });
 
     nextId++;

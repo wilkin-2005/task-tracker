@@ -30,8 +30,46 @@ header {
 }
 
 #task-form {
+    display: grid;
+    gap: 1rem;
+    /* grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); */
+    /* grid-template-columns: 1fr 1fr 1fr; */
+
     h2 {
-        margin-block-start: 0.5rem;
+        margin-block: 0;
+        text-decoration: underline;
+        font-weight: bolder;
+    }
+
+    .form-group {
+        display: grid;
+        gap: 0.1rem;
+        max-width: 600px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-block: 0;
+    }
+
+    textarea,
+    input,
+    select,
+    button {
+        padding: 0.5rem;
+        background-color: var(--color-2);
+        accent-color: var(--color-1);
+        border: 2px solid black;
+        border-radius: 0.5rem;
+
+        resize: vertical;
+    }
+
+    button {
+        max-width: 12rem;
+        background-color: var(--color-1);
+        color: contrast-color(var(--color-1));
+        font-weight: bold;
     }
 
     #error-message {
@@ -40,13 +78,6 @@ header {
         color: crimson;
         font-size: 0.85rem;
         font-weight: bold;
-    }
-
-    .form-label {
-        display: inline-block;
-        position: absolute;
-        left: -99999rem;
-        z-index: 100;
     }
 }
 

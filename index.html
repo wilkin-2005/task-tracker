@@ -17,18 +17,27 @@
     <form id="task-form" aria-labelledby="form-header">
         <h2 id="form-header">Lägg till en ny uppgift</h2>
 
-        <label class="form-label" for="task-input">Lägg till namn</label>
-        <input id="task-input" type="text" placeholder="Ny uppgift namn" minlength="3" maxlength="40" required>
+        <div class="form-group">
+            <label class="form-label" for="task-name">Lägg till namn</label>
+            <input id="task-name" name="name" type="text" placeholder="Ny uppgift namn" minlength="3" maxlength="40" required>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="priority-input">Välj prioritet</label>
+            <select id="priority-input" name="priority" required>
+                <option value="" disabled selected>Välj prioritet</option>
+                <option value="låg">Låg</option>
+                <option value="medel">Medel</option>
+                <option value="hög">Hög</option>
+            </select>
+        </div>
 
-        <label class="form-label" for="priority-input">Välj prioritet</label>
-        <select id="priority-input" required>
-            <option value="" disabled selected>Välj prioritet</option>
-            <option value="låg">Låg</option>
-            <option value="medel">Medel</option>
-            <option value="hög">Hög</option>
-        </select>
-
-        <button type="submit">Lägg till uppgift</button> <!-- id="add-task-button" -->
+        <!-- <div class="form-group">
+            <label class="form-label" for="description-input">Skriv en beskrivning</label>
+            <textarea id="description-input" name="description" rows="3" maxlength="1000" placeholder="Beskrivning av uppgift..."></textarea>
+        </div> -->
+        
+        <button type="submit">Lägg till uppgift</button>
 
         <p id="error-message"></p>
     </form>
