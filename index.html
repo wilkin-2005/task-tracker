@@ -18,10 +18,10 @@
         <h2 id="form-header">Lägg till en ny uppgift</h2>
 
         <label class="form-label" for="task-input">Lägg till namn</label>
-        <input id="task-input" type="text" placeholder="Ny uppgift namn">
+        <input id="task-input" type="text" placeholder="Ny uppgift namn" minlength="3" maxlength="40" required>
 
         <label class="form-label" for="priority-input">Välj prioritet</label>
-        <select id="priority-input">
+        <select id="priority-input" required>
             <option value="" disabled selected>Välj prioritet</option>
             <option value="låg">Låg</option>
             <option value="medel">Medel</option>
