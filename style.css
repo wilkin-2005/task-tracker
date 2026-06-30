@@ -4,7 +4,7 @@
     /* Färger */
     --color-1: oklch(33.511% 0.03312 260.932);
     --color-2:oklch(99.107% 0.00011 271.152);
-    --color-3: oklch(94.007% 0.00011 271.152);
+    --color-3: oklch(79.208% 0.00009 271.152);
 }
 
 body {
@@ -36,6 +36,7 @@ header {
         margin-block-end: 0;
 
         color: crimson;
+        font-size: 0.85rem;
         font-weight: bold;
     }
 

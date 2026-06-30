@@ -89,7 +89,7 @@ function handleSubmit(event: SubmitEvent): void
     const taskName = taskInput.value.trim();
     const priority = priorityInput.value as PriorityLevels;
 
-    if (!validateTask(taskName, priority) ) {
+    if (!validTask(taskName, priority) ) {
         return;
     }
 
@@ -106,8 +106,9 @@ function clearForm(): void
 }
 
 // Kollar om en submitad ny task är godkänd
-function validateTask(taskName: string, priority: PriorityLevels): boolean
+function validTask(taskName: string, priority: PriorityLevels): boolean
 {
+    // Kontrollerar namn
     if (taskName === "") {
         errorMessage.textContent = "Ogiltigt namn";
         return false;
@@ -117,6 +118,21 @@ function validateTask(taskName: string, priority: PriorityLevels): boolean
         return false;
     }
 
+    // Kontrollerar namndubletter
+    let doNameExist: boolean = false;
+
+    tasks.forEach(task => {
+        if ( task.name.toUpperCase() === taskName.toUpperCase() ) {
+            doNameExist = true;
+        }
+    });
+
+    if (doNameExist) {
+        errorMessage.textContent = "Finns redan uppgift med detta namn";
+        return false;
+    }
+    
+    // Kontrollerar prioritet
     if (priority !== "hög" && priority !== "medel" && priority !== "låg") {
         errorMessage.textContent = "Du måste välja en prioritetsnivå";
         return false;
