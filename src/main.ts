@@ -16,6 +16,8 @@ type Task = {
 let tasks: Task[] = [];
 let nextId = 0;
 
+let lastSaved: string = "30 juni 2026 13:37";
+
 
 // DOM variabler
 const form = document.querySelector("#task-form") as HTMLFormElement;
@@ -29,6 +31,7 @@ const gridContainer = document.createElement("div");
 gridContainer.classList.add("card-grid-container");
 
 const taskCounter = document.querySelector("#task-counter");
+const lastSavedCounter = document.querySelector("#last-saved");
 const clearBtn = document.querySelector("#clear-button") as HTMLButtonElement;
 clearBtn.addEventListener("click", clearTasks);
 
@@ -258,14 +261,54 @@ function taskCardStyling(task: Task, card: HTMLDivElement): void
 
 
 
-// Sparar alla tasks i Local Storage
+// Sparar alla tasks och annan information i Local Storage
 function saveTasks(): void
 {
-    const tasks_json: string = JSON.stringify(tasks);
-    localStorage.setItem("savedTasks", tasks_json);
+    updateLastSaved();
+
+    if (lastSavedCounter) {
+        lastSavedCounter.textContent = "Senast sparad: " + lastSaved;
+    }
+
+    const lastSaved_json: string = JSON.stringify(lastSaved);
+    localStorage.setItem("lastSaved", lastSaved_json);
 
     const nextId_json: string = JSON.stringify(nextId);
     localStorage.setItem("nextId", nextId_json);
+
+    const tasks_json: string = JSON.stringify(tasks);
+    localStorage.setItem("savedTasks", tasks_json);
+}
+
+
+
+// Sparar när task-listan uppdaterades senast.
+function updateLastSaved(): void
+{
+    lastSaved = formatCurrentDate();
+
+    if (lastSavedCounter) {
+        lastSavedCounter.textContent = "Senast sparad: " + lastSaved;
+    }
+}
+
+
+
+// Returnar en string med det nuvarande datumet och klockslaget formaterat som jag vill
+function formatCurrentDate(): string
+{
+    const d = new Date();
+    const allMonths: string[] = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+
+    const date: string = String(d.getDate());
+    const month: string = allMonths[d.getMonth()]!;
+    const year: string = String(d.getFullYear());
+
+    const hours: string = (d.getHours() < 10) ? `0${d.getHours()}`: `${d.getHours()}`;
+    const minutes: string = (d.getMinutes() < 10) ? `0${d.getMinutes()}` : `${d.getMinutes()}`;
+    const seconds: string = (d.getSeconds() < 10) ? `0${d.getSeconds()}`: `${d.getSeconds()}`;
+
+    return `${date} ${month} ${year} ${hours}:${minutes}:${seconds}`;
 }
 
 
@@ -275,13 +318,20 @@ function loadTasks(): void
 {
     const tasks_json = localStorage.getItem("savedTasks");
     const nextId_json = localStorage.getItem("nextId")
+    const lastSaved_json = localStorage.getItem("lastSaved");
 
-    if (tasks_json === null || nextId_json === null) {
+    if (tasks_json === null || nextId_json === null || lastSaved_json === null) {
         return;
     }
 
     tasks = JSON.parse(tasks_json);
     nextId = JSON.parse(nextId_json);
+    lastSaved = JSON.parse(lastSaved_json);
+
+    if (lastSavedCounter) {
+        console.log(lastSaved);
+        lastSavedCounter.textContent = "Senast sparad: " + lastSaved;
+    }
 }
 
 
@@ -289,7 +339,7 @@ function loadTasks(): void
 // Raderar alla tasks från Local Storage
 function clearTasks(): void
 {
-    if (tasks.length === 0 || !confirm("Är du säker? Vill du radera alla dina uppgifter permanent?") ) {
+    if (tasks.length === 0 || !confirm("Är du säker på att du vill radera alla dina uppgifter permanent?") ) {
         return;
     }
 

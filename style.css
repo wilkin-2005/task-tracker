@@ -20,14 +20,16 @@ header {
     text-align: center;
 }
 
-#task-form {
+section, form {
     display: inline-block;
     padding: 1rem;
     margin-block: 1rem;
 
     border: 0.5rem solid var(--color-1);
     border-radius: 1rem;
-    
+}
+
+#task-form {
     h2 {
         margin-block-start: 0.5rem;
     }
@@ -50,8 +52,15 @@ header {
 
 #task-counter {
     display: block;
-    padding-block: 0.5rem 1rem;
+    margin-block: 0.5rem;
     font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#last-saved {
+    display: block;
+    color: var(--color-1);
+    margin-block: 0.75rem;
     font-weight: bold;
 }
 
