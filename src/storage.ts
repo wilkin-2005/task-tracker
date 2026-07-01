@@ -1,6 +1,6 @@
 
 // Importerar från andra .ts-filer
-import { renderAllTasks } from "./render.js";
+import { renderTaskList } from "./render.js";
 import { tasks, nextId, setTasksArray, setNextId } from "./tasks.js";
 
 // Variabler
@@ -72,7 +72,7 @@ function clearTasks(): void
     setTasksArray( [] );
     localStorage.removeItem("savedTasks");
     updateLastSaved();
-    renderAllTasks();
+    renderTaskList();
 }
 
 

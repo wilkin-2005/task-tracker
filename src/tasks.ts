@@ -1,7 +1,7 @@
 
 // Importerar från andra .ts-filer
 import type { Task, PriorityLevels, Status } from "./types.js";
-import { renderAllTasks } from "./render.js";
+import { renderTaskList } from "./render.js";
 import { saveTasks } from "./storage.js";
 
 
@@ -35,7 +35,7 @@ export function addTask(taskName: string, taskPriority: PriorityLevels): void
 
     nextId++;
     saveTasks();
-    renderAllTasks();
+    renderTaskList();
 }
 
 
@@ -45,7 +45,7 @@ export function deleteTask(taskId: number): void
 {
     tasks = tasks.filter((task) => task.id !== taskId);
     saveTasks();
-    renderAllTasks();
+    renderTaskList();
 }
 
 
@@ -71,5 +71,5 @@ export function updateTaskStatus(taskId: number, toggle: boolean = true, updateT
     });
 
     saveTasks();
-    renderAllTasks();
+    renderTaskList();
 }
