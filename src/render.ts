@@ -1,7 +1,7 @@
 
 // Importerar från andra .ts-filer
-import type { Task } from "./types";
-import { tasks, deleteTask, updateTaskStatus } from "./tasks";
+import type { Task } from "./types.js";
+import { tasks, deleteTask, updateTaskStatus } from "./tasks.js";
 
 
 // Variabler

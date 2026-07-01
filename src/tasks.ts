@@ -1,18 +1,22 @@
 
 // Importerar från andra .ts-filer
-import type { Task, PriorityLevels, Status } from "./types";
-import { renderAllTasks } from "./render";
-import { saveTasks } from "./storage";
+import type { Task, PriorityLevels, Status } from "./types.js";
+import { renderAllTasks } from "./render.js";
+import { saveTasks } from "./storage.js";
 
 
 // Variabler
 export let nextId = 0;
 export let tasks: Task[] = [];
 
-export function setTasksArray(newArray: Task[]): void
-{
-    // Används för att skriva över tasks från en annan fil där den har importerats
+
+
+// Används för att skriva över värdet från en annan fil där den har importerats
+export function setTasksArray(newArray: Task[]): void {
     tasks = newArray;
+}
+export function setNextId(newNextId: number): void {
+    nextId = newNextId;
 }
 
 

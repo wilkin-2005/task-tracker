@@ -14,40 +14,45 @@
         <h1>Task-Tracker</h1>
     </header>
 
-    <form id="task-form" aria-labelledby="form-header">
-        <h2 id="form-header">Lägg till en ny uppgift</h2>
+    <main>
 
-        <div class="form-group">
-            <label class="form-label" for="task-name">Lägg till namn</label>
-            <input id="task-name" name="name" type="text" placeholder="Ny uppgift namn" minlength="3" maxlength="40" required>
-        </div>
+        <form id="task-form" aria-labelledby="form-header">
+            <h2 id="form-header">Lägg till en ny uppgift</h2>
+
+            <div class="form-group">
+                <label class="form-label" for="task-name">Lägg till namn</label>
+                <input id="task-name" name="task-name" type="text" placeholder="Ny uppgift namn" minlength="3" maxlength="33" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="priority-input">Välj prioritet</label>
+                <select id="priority-input" name="priority" required>
+                    <option value="" disabled selected>Välj prioritet</option>
+                    <option value="låg">Låg</option>
+                    <option value="medel">Medel</option>
+                    <option value="hög">Hög</option>
+                </select>
+            </div>
+
+            <!-- <div class="form-group">
+                <label class="form-label" for="description-input">Skriv en beskrivning</label>
+                <textarea id="description-input" name="description" rows="3" maxlength="1000" placeholder="Beskrivning av uppgift..."></textarea>
+            </div> -->
+            
+            <button type="submit">Lägg till uppgift</button>
+
+            <p id="error-message"></p>
+        </form>
+
+        <section id="app" aria-label="Alla uppgifter"></section>
         
-        <div class="form-group">
-            <label class="form-label" for="priority-input">Välj prioritet</label>
-            <select id="priority-input" name="priority" required>
-                <option value="" disabled selected>Välj prioritet</option>
-                <option value="låg">Låg</option>
-                <option value="medel">Medel</option>
-                <option value="hög">Hög</option>
-            </select>
-        </div>
+        <section id="info--delete" aria-label="Information om och radera alla uppgifter">
+            <span id="task-counter">Totalt antal uppgifter:</span>
+            <span id="last-saved">Senast sparad:</span>
+            <button type="button" id="clear-button">Radera alla uppgifter</button>
+        </section>
 
-        <!-- <div class="form-group">
-            <label class="form-label" for="description-input">Skriv en beskrivning</label>
-            <textarea id="description-input" name="description" rows="3" maxlength="1000" placeholder="Beskrivning av uppgift..."></textarea>
-        </div> -->
-        
-        <button type="submit">Lägg till uppgift</button>
+    </main>
 
-        <p id="error-message"></p>
-    </form>
-
-    <section id="app" aria-label="Alla uppgifter"></section>
-    
-    <section id="info--delete" aria-label="Information om och radera alla uppgifter">
-        <span id="task-counter">Totalt antal uppgifter:</span>
-        <span id="last-saved">Senast sparad:</span>
-        <button type="button" id="clear-button">Radera alla uppgifter</button>
-    </section>
 </body>
 </html>

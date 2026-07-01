@@ -110,6 +110,9 @@ header {
     border-left: 8px solid var(--color-1);
     border-radius: 0.3rem 1rem 1rem 0.3rem;
 
+    overflow-x: hidden;
+    overflow-y: hidden;
+
 
     button:first-of-type {
         margin-inline-end: 0.5rem;

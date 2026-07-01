@@ -6,6 +6,7 @@ import { addTask, tasks } from "./tasks.js";
 import { loadTasks } from "./storage.js";
 
 
+
 // DOM variabler
 const form = document.querySelector("#task-form") as HTMLFormElement;
 form.addEventListener("submit", handleSubmit);
@@ -53,8 +54,8 @@ function validTask(taskName: string, priority: PriorityLevels): boolean
         errorMessage.textContent = "Ogiltigt namn";
         return false;
     }
-    else if (taskName.length < 3 || taskName.length > 40) {
-        errorMessage.textContent = "Namnet måste vara mellan 3 till 40 tecken långt";
+    else if (taskName.length < 3 || taskName.length > 32) {
+        errorMessage.textContent = "Namnet måste vara mellan 3 till 32 tecken långt";
         return false;
     }
 

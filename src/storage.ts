@@ -1,7 +1,7 @@
 
 // Importerar från andra .ts-filer
-import { renderAllTasks } from "./render";
-import { tasks, nextId, setTasksArray } from "./tasks";
+import { renderAllTasks } from "./render.js";
+import { tasks, nextId, setTasksArray, setNextId } from "./tasks.js";
 
 // Variabler
 let lastSaved: string = "aldrig";
@@ -33,6 +33,50 @@ export function saveTasks(): void
 
 
 
+// Läser in sparade tasks från Local Storage
+export function loadTasks(): void
+{
+    const tasks_json = localStorage.getItem("savedTasks");
+    const nextId_json = localStorage.getItem("nextId")
+    const lastSaved_json = localStorage.getItem("lastSaved");
+
+    if (tasks_json !== null) {
+        // tasks = JSON.parse(tasks_json);
+        setTasksArray( JSON.parse(tasks_json) );
+    }
+    if (nextId_json !== null) {
+        // nextId = JSON.parse(nextId_json);
+        // setTasksArray( JSON.parse(nextId_json) );
+        setNextId( JSON.parse(nextId_json) );
+        
+    }
+    if (lastSaved_json !== null) {
+        lastSaved = JSON.parse(lastSaved_json);
+    }
+
+    if (lastSavedCounter) {
+        lastSavedCounter.textContent = "Senast sparad: " + lastSaved;
+    }
+}
+
+
+
+// Raderar alla tasks från Local Storage
+function clearTasks(): void
+{
+    if (tasks.length === 0 || !confirm("Är du säker på att du vill radera alla dina uppgifter permanent?") ) {
+        return;
+    }
+
+    // tasks = [];
+    setTasksArray( [] );
+    localStorage.removeItem("savedTasks");
+    updateLastSaved();
+    renderAllTasks();
+}
+
+
+
 // Sparar när task-listan uppdaterades senast.
 function updateLastSaved(): void
 {
@@ -60,47 +104,4 @@ function formatCurrentDate(): string
     const seconds: string = (d.getSeconds() < 10) ? `0${d.getSeconds()}`: `${d.getSeconds()}`;
 
     return `${date} ${month} ${year} ${hours}:${minutes}:${seconds}`;
-}
-
-
-
-// Läser in sparade tasks från Local Storage
-export function loadTasks(): void
-{
-    const tasks_json = localStorage.getItem("savedTasks");
-    const nextId_json = localStorage.getItem("nextId")
-    const lastSaved_json = localStorage.getItem("lastSaved");
-
-    if (tasks_json !== null) {
-        // tasks = JSON.parse(tasks_json);
-        setTasksArray( JSON.parse(tasks_json) );
-    }
-    if (nextId_json !== null) {
-        // nextId = JSON.parse(nextId_json);
-        setTasksArray( JSON.parse(nextId_json) );
-    }
-    if (lastSaved_json !== null) {
-        lastSaved = JSON.parse(lastSaved_json);
-    }
-
-    if (lastSavedCounter) {
-        console.log(lastSaved);
-        lastSavedCounter.textContent = "Senast sparad: " + lastSaved;
-    }
-}
-
-
-
-// Raderar alla tasks från Local Storage
-function clearTasks(): void
-{
-    if (tasks.length === 0 || !confirm("Är du säker på att du vill radera alla dina uppgifter permanent?") ) {
-        return;
-    }
-
-    // tasks = [];
-    setTasksArray( [] );
-    localStorage.removeItem("savedTasks");
-    updateLastSaved();
-    renderAllTasks();
 }
