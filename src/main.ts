@@ -16,7 +16,7 @@ type Task = {
 let tasks: Task[] = [];
 let nextId = 0;
 
-let lastSaved: string = "30 juni 2026 13:37";
+let lastSaved: string = "aldrig";
 
 
 // DOM variabler
@@ -326,13 +326,15 @@ function loadTasks(): void
     const nextId_json = localStorage.getItem("nextId")
     const lastSaved_json = localStorage.getItem("lastSaved");
 
-    if (tasks_json === null || nextId_json === null || lastSaved_json === null) {
-        return;
+    if (tasks_json !== null) {
+        tasks = JSON.parse(tasks_json);
     }
-
-    tasks = JSON.parse(tasks_json);
-    nextId = JSON.parse(nextId_json);
-    lastSaved = JSON.parse(lastSaved_json);
+    if (nextId_json !== null) {
+        nextId = JSON.parse(nextId_json);
+    }
+    if (lastSaved_json !== null) {
+        lastSaved = JSON.parse(lastSaved_json);
+    }
 
     if (lastSavedCounter) {
         console.log(lastSaved);
@@ -350,8 +352,8 @@ function clearTasks(): void
     }
 
     tasks = [];
-    // localStorage.setItem("savedTasks", "");
     localStorage.removeItem("savedTasks");
+    updateLastSaved();
     renderAllTasks();
 }
 
