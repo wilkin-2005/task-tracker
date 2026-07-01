@@ -121,7 +121,7 @@ function renderTaskCounter(): void
     }
 
     if (tasks.length === 0) {
-        taskCounter.textContent = "Ännu inga uppgifter."
+        taskCounter.textContent = "Ännu inga uppgifter"
     }
     else {
         taskCounter.textContent = `Totalt antal uppgifter: ${tasks.length}`;

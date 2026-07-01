@@ -2,6 +2,7 @@
 // Importerar från andra .ts-filer
 import { renderTaskList } from "./render.js";
 import { tasks, nextId, setTasksArray, setNextId } from "./tasks.js";
+import { STORAGE_KEYS } from "./config.js";
 
 // Variabler
 let lastSaved: string = "aldrig";
@@ -21,14 +22,11 @@ export function saveTasks(): void
         lastSavedCounter.textContent = "Senast sparad: " + lastSaved;
     }
 
-    const lastSaved_json: string = JSON.stringify(lastSaved);
-    localStorage.setItem("lastSaved", lastSaved_json);
+    localStorage.setItem( STORAGE_KEYS.LASTSAVED, JSON.stringify(lastSaved) );
 
-    const nextId_json: string = JSON.stringify(nextId);
-    localStorage.setItem("nextId", nextId_json);
+    localStorage.setItem( STORAGE_KEYS.NEXTID, JSON.stringify(nextId) );
 
-    const tasks_json: string = JSON.stringify(tasks);
-    localStorage.setItem("savedTasks", tasks_json);
+    localStorage.setItem( STORAGE_KEYS.TASKS, JSON.stringify(tasks) );
 }
 
 
@@ -36,17 +34,14 @@ export function saveTasks(): void
 // Läser in sparade tasks från Local Storage
 export function loadTasks(): void
 {
-    const tasks_json = localStorage.getItem("savedTasks");
-    const nextId_json = localStorage.getItem("nextId")
-    const lastSaved_json = localStorage.getItem("lastSaved");
+    const tasks_json = localStorage.getItem(STORAGE_KEYS.TASKS);
+    const nextId_json = localStorage.getItem(STORAGE_KEYS.NEXTID);
+    const lastSaved_json = localStorage.getItem(STORAGE_KEYS.LASTSAVED);
 
     if (tasks_json !== null) {
-        // tasks = JSON.parse(tasks_json);
         setTasksArray( JSON.parse(tasks_json) );
     }
     if (nextId_json !== null) {
-        // nextId = JSON.parse(nextId_json);
-        // setTasksArray( JSON.parse(nextId_json) );
         setNextId( JSON.parse(nextId_json) );
         
     }
@@ -70,7 +65,7 @@ function clearTasks(): void
 
     // tasks = [];
     setTasksArray( [] );
-    localStorage.removeItem("savedTasks");
+    localStorage.removeItem(STORAGE_KEYS.TASKS);
     updateLastSaved();
     renderTaskList();
 }

@@ -11,5 +11,4 @@ export type Task = {
     status: Status;
     priority: PriorityLevels;
     description?: string;
-    notes?: string;
 };

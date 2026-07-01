@@ -4,11 +4,9 @@ import type { Task, PriorityLevels, Status } from "./types.js";
 import { renderTaskList } from "./render.js";
 import { saveTasks } from "./storage.js";
 
-
 // Variabler
 export let nextId = 0;
 export let tasks: Task[] = [];
-
 
 
 // Används för att skriva över värdet från en annan fil där den har importerats
@@ -24,13 +22,11 @@ export function setNextId(newNextId: number): void {
 // Skapa en funktion som lägger till en ny uppgift i vår lista.
 export function addTask(taskName: string, taskPriority: PriorityLevels): void
 {
-    //, taskDescription: string = ""
     tasks.push({
         id: nextId,
         name: taskName,
         status: "pågående",
         priority: taskPriority,
-        // description: taskDescription,
     });
 
     nextId++;
@@ -61,11 +57,9 @@ export function updateTaskStatus(taskId: number, toggle: boolean = true, updateT
         } = task;
 
         if (id === taskId && toggle) {
-            // Växlar statusen för uppgiften
             task.status = (status === "pågående") ? "slutförd" : "pågående";
         }
         else if (id === taskId && updateTo !== undefined) {
-            // Ändrar uppgiftens status till det bestämda värdet
             task.status = updateTo;
         }
     });

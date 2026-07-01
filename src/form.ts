@@ -6,7 +6,6 @@ import { addTask, tasks } from "./tasks.js";
 const nameInput = document.querySelector("#task-name") as HTMLInputElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
 const errorMessage = document.querySelector("#error-message") as HTMLParagraphElement;
-// const descriptionInput = document.querySelector("#description-input") as HTMLTextAreaElement;
 
 
 // Hanterar submits från formuläret för att lägga till nya uppgifter
@@ -16,7 +15,6 @@ export function handleSubmit(event: SubmitEvent): void
 
     const taskName: string = nameInput.value.trim();
     const priority = priorityInput.value as PriorityLevels;
-    // const description: string = descriptionInput.value;
 
     if (!validTask(taskName, priority) ) {
         return;
