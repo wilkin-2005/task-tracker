@@ -10,6 +10,9 @@ All functionality is built with TypeScript which was the focus of this project. 
 > [!NOTE]
 > The website is entirely in Swedish, as well as most code comments and Git Commit messages.
 
+> [!TIP]
+> Some browsers have a built-in feature to automatically translate websites. In for example Google Chrome it can be accessed by right-clicking anywhere on the website and chose "Translate to English". You can (most likely) chose any language you want other than English.
+
 ---
 
 ![Short video clip showcasing the Task-Tracker's functionality](./images/website_clip_1.gif)
