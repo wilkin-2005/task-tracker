@@ -1,21 +1,18 @@
 
-# ⚠️README-file is still a Work-in-progress⚠️
-
-
 # ✅ Task-Tracker | Frontend education project #3
 
 The third project I worked on during the Frontend education at Lexicon.
 
-It is a website for managing tasks and assignments. Basically a to do list. The user can add tasks, and marked tasks as completed and also delete them. All created tasks are saved in the browser, even if you close down the program and come back to it later.
+It is a website for managing tasks and assignments. Basically a to-do list. The user can add tasks, and marked tasks as completed and also delete them. All created tasks are saved in the browser, even if you close down the program and come back to it later.
 
-All functionality is built with TypeScript which was this projects focus. Therefore the HTML and CSS is quite basic.
+All functionality is built with TypeScript which was the focus of this project. Therefore the HTML and CSS isn't that advanced.
 
 > [!NOTE]
 > The website is entirely in Swedish, as well as most code comments and Git Commit messages.
 
 ---
 
-![Screenshot of the Task-Tracker](./images/website_clip_1.gif)
+![Short video clip showcasing the Task-Tracker's functionality](./images/website_clip_1.gif)
 
 ---
 
@@ -40,21 +37,21 @@ All functionality is built with TypeScript which was this projects focus. Theref
 | GitHub       | Remote repository    |
 
 
-## 📋 Requirements
+## 📋 Requirements before installation
 
-- **Node.js** v.24.18.1+
-- **npm** v.12.0.2+
-- **Git**
+- **Node.js** - version 24.18 or later is recommended
+- **npm** - version 12 or later is recommended
+- **Git** - to clone repository from Github (optional)
 
 
-## 📦 Installation
+## 📦 Installation steps
 
-1. Clone the repository or download the ZIP-file from GitHub.
+1. Clone the repository with Git or download the ZIP-file from GitHub.
 ``` bash
 git clone https://github.com/wilkin-2005/task-tracker.git
 ```
 
-2. Open the project folder `task-tracker` with Visual Studio Code.
+2. Open the project's root folder `task-tracker` with Visual Studio Code.
 
 3. Install dependencies by running `npm install` in VS Code's built-in terminal.
 
@@ -78,7 +75,20 @@ git clone https://github.com/wilkin-2005/task-tracker.git
 6. Delete your task by clicking on the button on your task that says "Radera uppgift".
 
 > [!TIP]
-> You can delete all your tasks at once by pressing the button "Radera alla uppgifter" located right below the last saved text. When pressed you will see a pop-up asking you to confirm before deleting.
+> You can delete all your tasks at once by pressing the button "Radera alla uppgifter" located right below the *last saved* text. When pressed you will see a pop-up asking you to confirm before deleting.
+
+
+## 👥 Author
+
+### Wilmer Kindstedt
+- GitHub: [@wilkin-2005](https://github.com/wilkin-2005)
+- LinkedIn: [Wilmer Kindstedt](https://www.linkedin.com/in/wilmer-kindstedt-7b6a99407/?skipRedirect=true)
+
+
+## 🙏 Credits / Acknowledgements
+
+- [Assignment instructions](https://github.com/Lexicon-Utbildning-Front-end-2026/typescript-task-tracker) (in Swedish)
+- Help with CSS lenght units from [whatunit.com](https://whatunit.com/)
 
 ---
 
